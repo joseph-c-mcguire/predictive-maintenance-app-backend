@@ -56,6 +56,15 @@ poetry add --dev pytest
 ```sh
 poetry run pytest
 ```
+## How to Build and Run the Docker Container
+1. Build the Docker image:
+```sh
+docker build -t predictive-maintenance-app .
+```
+2. Run the Docker container:
+```sh
+docker run -p 5000:5000 predictive-maintenance-app
+```
 
 ## Repository Structure
 - `data/`: Contains the dataset files.
