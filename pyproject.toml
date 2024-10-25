@@ -1,0 +1,41 @@
+[tool.poetry]
+name = "predictive_maintenance"
+version = "0.1.0"
+description = "A predictive maintenance system for industrial equipment using machine learning"
+authors = ["Joseph McGuire <joseph.c.mcg@gmail.com>"]
+readme = "README.md"
+license = "LICENSE"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pandas = "*"
+numpy = "*"
+scikit-learn = "*"
+pyyaml = "*"
+matplotlib = "*"
+seaborn = "*"
+flask = "*"
+shap = "*"
+joblib = "*"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.5"
+black = "^21.7b0"
+mypy = "^0.910"
+flake8 = "^3.9.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+
+[tool.mypy]
+python_version = 3.11
+files = "scripts"
+
+[tool.flake8]
+max-line-length = 88
+exclude = ["build/", "dist/", ".tox/", ".eggs/", "*.egg-info/"]
