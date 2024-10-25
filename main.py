@@ -1,12 +1,12 @@
-import joblib
 from pathlib import Path
 
+import joblib
 from flask import Flask, request, jsonify
 from pandas import to_pickle, DataFrame, read_csv
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 
-from utils.data_utils import (
+from src.data_utils import (
     load_data, load_config, preprocess_data, select_features,
     train_and_evaluate_model, perform_eda, tune_model,
     interpret_model, monitor_model_performance
