@@ -1,19 +1,24 @@
+from src.data_utils import (
+    load_config, load_data, preprocess_data, perform_eda,
+    select_features, train_and_evaluate_model, tune_model,
+    interpret_model, monitor_model_performance, get_top_n_indices
+)
 import sys
 import unittest
 from unittest.mock import patch, MagicMock
 import os
 
-# Add the src directory to the Python path
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
-import numpy as np
-import pandas as pd
+import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestClassifier
-from src.data_utils import (
-    load_config, load_data, preprocess_data, perform_eda, 
-    select_features, train_and_evaluate_model, tune_model,
-    interpret_model, monitor_model_performance, get_top_n_indices
-)
+from sklearn.linear_model import LogisticRegression
+import pandas as pd
+import numpy as np
+
+# Add the src directory to the Python path
+sys.path.insert(0, os.path.abspath(
+    os.path.join(os.path.dirname(__file__), '..')))
+
+np.random.seed(42)
 
 
 class PredictiveMaintenanceTests(unittest.TestCase):
@@ -26,7 +31,8 @@ class PredictiveMaintenanceTests(unittest.TestCase):
 
     @patch("pandas.read_csv")
     def test_load_data(self, mock_read_csv):
-        mock_read_csv.return_value = pd.DataFrame({"col1": [1, 2], "col2": [3, 4]})
+        mock_read_csv.return_value = pd.DataFrame(
+            {"col1": [1, 2], "col2": [3, 4]})
         data = load_data("data.csv")
         self.assertTrue(isinstance(data, pd.DataFrame))
         self.assertEqual(data.shape, (2, 2))
@@ -44,12 +50,14 @@ class PredictiveMaintenanceTests(unittest.TestCase):
             columns_to_encode=["encode_col"]
         )
         self.assertIsNotNone(preprocessor)
-        self.assertEqual(processed_data.shape[1], 2)  # scale + encode columns
+        self.assertEqual(processed_data.shape[1], 3)  # scale + encode columns
 
     @patch("matplotlib.pyplot.show")
     def test_perform_eda(self, mock_show):
-        data = pd.DataFrame({"col1": np.random.randn(100), "col2": np.random.randn(100)})
-        perform_eda(data)  # No assertion needed, but it should run without errors
+        data = pd.DataFrame({"col1": np.random.randn(100),
+                            "col2": np.random.randn(100)})
+        # No assertion needed, but it should run without errors
+        perform_eda(data)
         self.assertTrue(mock_show.called)
 
     def test_select_features(self):
@@ -65,7 +73,8 @@ class PredictiveMaintenanceTests(unittest.TestCase):
         y_train = np.random.randint(0, 2, size=50)
         X_test = np.random.randn(20, 4)
         y_test = np.random.randint(0, 2, size=20)
-        results = train_and_evaluate_model(X_train, y_train, X_test, y_test)
+        results = train_and_evaluate_model(X_train, y_train, X_test, y_test, {
+                                           "Logistic Regression": LogisticRegression()})
         self.assertTrue(isinstance(results, dict))
         self.assertIn("Logistic Regression", results)
         self.assertIn("Classification Report", results["Logistic Regression"])
@@ -73,7 +82,7 @@ class PredictiveMaintenanceTests(unittest.TestCase):
     def test_tune_model(self):
         X_train = np.random.randn(50, 4)
         y_train = np.random.randint(0, 2, size=50)
-        model = RandomForestClassifier()
+        model = {"Random Forest": RandomForestClassifier()}
         param_grid = {"n_estimators": [10, 50], "max_depth": [2, 5]}
         best_model = tune_model(model, param_grid, X_train, y_train)
         self.assertIsInstance(best_model, RandomForestClassifier)
@@ -100,6 +109,7 @@ class PredictiveMaintenanceTests(unittest.TestCase):
         arr = np.array([1, 3, 5, 7, 9, 2, 4, 6, 8, 0])
         top_indices = get_top_n_indices(arr, 3)
         self.assertEqual(list(top_indices), [4, 8, 3])
+
 
 if __name__ == "__main__":
     unittest.main()

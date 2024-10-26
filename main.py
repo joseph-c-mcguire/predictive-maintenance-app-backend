@@ -1,111 +1,165 @@
-from pathlib import Path
 
-import joblib
+import logging
+import argparse
 from flask import Flask, request, jsonify
-from pandas import to_pickle, DataFrame, read_csv
-from sklearn.ensemble import RandomForestClassifier
+from pandas import DataFrame, read_csv
 from sklearn.model_selection import train_test_split
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
 
 from src.data_utils import (
     load_data, load_config, preprocess_data, select_features,
     train_and_evaluate_model, perform_eda, tune_model,
-    interpret_model, monitor_model_performance
+    interpret_model, monitor_model_performance, save_model, load_model,
+    get_model
 )
 
-# yaml path
-yaml_path = "config.yaml"
-# load config
-config = load_config(yaml_path)
-# load data
-data = load_data(config["data_path"])
-# perform EDA
-# perform_eda(data)
-X = data.drop(config["target_column"], axis=1)
-y = data[config["target_column"]]
-# train-test split
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42)
-# preprocess data
-preprocessor, preprocessed_data = preprocess_data(
-    X_train, columns_to_drop=config["columns_to_drop"],
-    columns_to_scale=config["columns_to_scale"],
-    columns_to_encode=config["columns_to_encode"]
-)
+from src.ModelMonitor import ModelMonitor
 
-# select features
-selected_features = select_features(
-    X_train, y_train, preprocessor=preprocessor)
-
-# train and evaluate model
-model_results = train_and_evaluate_model(
-    preprocessed_data[:, selected_features], y_train, preprocessor.fit_transform(X_test)[:, selected_features], y_test)
-for model_name, result in model_results.items():
-    print(f"Model: {model_name}")
-    print(result['Classification Report'])
-    print(f"ROC AUC: {result['ROC AUC']}\n")
-
-best_rf_model = tune_model(RandomForestClassifier(),
-                           config['param_grid'], preprocessed_data, y_train)
-
-model_save_path = Path(config["model_directory"]) / 'best_model.pkl'
-print(best_rf_model)
-# Save the model
-to_pickle(best_rf_model, model_save_path)
-# Interpret the model
-interpret_model(best_rf_model, preprocessor.fit_transform(
-    X_test)[:, selected_features])
-# Load the trained model
-model = joblib.load(model_save_path)
-# Launch flask
-app = Flask(__name__)
+# Set up logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
-@app.route('/predict', methods=['POST'])
-def predict():
-    """
-    Predict equipment failure using the deployed model.
+def main(config_path: str):
+    # Load config
+    logger.info("Loading configuration")
+    config = load_config(config_path)
+    if not config:
+        logger.error("Failed to load configuration. Exiting.")
+        exit(1)
 
-    Request JSON format:
-    {
-        "features": {
-            "temperature": value,
-            "vibration": value,
-            ...
+    # Load data
+    logger.info("Loading data")
+    data = load_data(config["data_path"])
+    if data.empty:
+        logger.error("Failed to load data. Exiting.")
+        exit(1)
+
+    # Perform EDA (commented out for now)
+    # logger.info("Performing EDA")
+    # perform_eda(data)
+
+    # Prepare features and target
+    logger.info("Preparing features and target")
+    X = data.drop(config["target_column"], axis=1)
+    y = data[config["target_column"]]
+
+    # Train-test split
+    logger.info("Splitting data into train and test sets")
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, **config.get("train_test_split", {}))
+
+    # Preprocess data using Pipeline
+    logger.info("Setting up preprocessing pipeline")
+    preprocessor = ColumnTransformer(
+        transformers=[
+            ('drop_columns', 'drop', config.get("columns_to_drop", [])),
+            ('scale_columns', StandardScaler(),
+             config.get("columns_to_scale", [])),
+            ('encode_columns', OneHotEncoder(),
+             config.get("columns_to_encode", []))
+        ]
+    ).fit(X=X_train, y=y_train)
+    # Process data
+    pro_X_train, pro_X_test = preprocessor.transform(
+        X_train), preprocessor.transform(X_test)
+    # Define models and their hyperparameter grids
+    models = {
+        model: get_model(**meta_params) for model, meta_params in config["models"].items()
+    }
+
+    # Train and evaluate model
+    logger.info("Training and evaluating models")
+    results = train_and_evaluate_model(
+        pro_X_train, y_train, pro_X_test, y_test, models)
+    for model_name, result in results.items():
+        logger.info(f"Model: {model_name}")
+        logger.info(result['Classification Report'])
+        logger.info(f"ROC AUC: {result['ROC AUC']}")
+
+    # Tune model
+    logger.info("Tuning models")
+    best_model = tune_model(
+        models, config["param_grids"], pro_X_train, y_train)
+    logger.info(f"Best model: {best_model}")
+
+    # Save the model
+    logger.info("Saving the best model")
+    save_model(best_model, 'best_model.pkl')
+
+    # Interpret the model
+    logger.info("Interpreting the model")
+    interpret_model(best_model, pro_X_test)
+
+    # Load the trained model
+    logger.info("Loading the trained model")
+    model = load_model('best_model.pkl')
+
+    # Initialize ModelMonitor
+    monitor = ModelMonitor(model, pro_X_train)
+
+    # Launch Flask app
+    app = Flask(__name__)
+
+    @app.route('/predict', methods=['POST'])
+    def predict():
+        """
+        Predict equipment failure using the deployed model.
+
+        Request JSON format:
+        {
+            "features": {
+                "temperature": value,
+                "vibration": value,
+                ...
+            }
         }
-    }
 
-    Returns:
-    JSON response with prediction result.
-    """
-    data = request.get_json(force=True)
-    features = DataFrame(data, index=[0])
-    prediction = model.predict(features[:, selected_features])
+        Returns:
+        JSON response with prediction result.
+        """
+        data = request.get_json(force=True)
+        features = DataFrame(data, index=[0])
+        prediction = model.predict(features)
 
-    return jsonify({'prediction': prediction[0]})
+        # Monitor model performance
+        metrics, drift_status = monitor.monitor(features, prediction)
+        logger.info(f"Prediction metrics: {metrics}")
+        logger.info(f"Drift detected: {drift_status}")
 
+        return jsonify({'prediction': prediction[0], 'metrics': metrics, 'drift_detected': drift_status})
 
-@app.route('/monitor', methods=['POST'])
-def monitor():
-    """
-    Monitor model performance on new data.
+    @app.route('/monitor', methods=['POST'])
+    def monitor():
+        """
+        Monitor model performance on new data.
 
-    Request JSON format:
-    {
-        "data_path": "path_to_new_data.csv"
-    }
+        Request JSON format:
+        {
+            "data_path": "path_to_new_data.csv"
+        }
 
-    Returns:
-    JSON response with model performance metrics.
-    """
-    data = request.get_json(force=True)
-    new_data_path = data['data_path']
-    new_data = read_csv(new_data_path)
-    X_new = preprocessor.fit_transform(new_data)[:, selected_features]
-    y_new = new_data['failure']
+        Returns:
+        JSON response with model performance metrics.
+        """
+        data = request.get_json(force=True)
+        new_data_path = data['data_path']
+        new_data = read_csv(new_data_path)
+        X_new = preprocessor.transform(new_data)
+        y_new = new_data[config["target_column"]]
 
-    performance = monitor_model_performance(best_rf_model, X_new, y_new)
-    return jsonify({'roc_auc': performance})
+        performance = monitor_model_performance(best_model, X_new, y_new)
+        return jsonify({'roc_auc': performance})
+
+    if __name__ == '__main__':
+        logger.info("Starting Flask app")
+        app.run(debug=True)
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    parser = argparse.ArgumentParser(description="Predictive Maintenance CLI")
+    parser.add_argument('--config', type=str, required=True,
+                        help='Path to the configuration file')
+    args = parser.parse_args()
+    main(args.config)
