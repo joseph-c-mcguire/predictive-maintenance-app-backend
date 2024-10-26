@@ -1,96 +1,58 @@
-# Predictive Maintenance for Industrial Equipment
+# Predictive Maintenance System
 
-## Project Overview
-This project aims to develop a predictive maintenance system for industrial equipment using machine learning techniques to predict equipment failures and optimize maintenance schedules.
+A predictive maintenance system for industrial equipment using machine learning.
 
-## Steps to Complete the Project
-1. Data Collection
-2. Data Preprocessing
-3. Exploratory Data Analysis (EDA)
-4. Feature Selection
-5. Model Development
-6. Model Evaluation and Selection
-7. Model Interpretation
-8. Deployment
-9. Monitoring and Maintenance
-10. Documentation and Presentation
+## Table of Contents
 
-## How to Run the Code
-1. Clone the repository.
-   ```sh
-   git clone https://github.com/yourusername/predictive-maintenance-scikit-learn-example.git
-   cd predictive-maintenance-scikit-learn-example
-   ```
-2. Install Poetry (if not already installed).
-    ```sh
-    curl -sSL https://install.python-poetry.org | python3 -
-    ```
-3. Install the required packages using Poetry.
-   ```sh
-   poetry install
-   ```
-4. Run the main script.
-```sh
-poetry run python src/main.py
-```
-## How to Run the Code
-1. Clone the repository.
-2. Install the required packages: `pip install -r requirements.txt`
-3. Run each script in order:
-   - `data_collection.py`
-   - `data_preprocessing.py`
-   - `exploratory_data_analysis.py`
-   - `feature_selection.py`
-   - `model_development.py`
-   - `model_selection.py`
-   - `model_interpretation.py`
-   - `deployment.py`
-   - `monitoring.py`
+- [Introduction](#introduction)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Configuration](#configuration)
+- [Testing](#testing)
+- [Contributing](#contributing)
+- [License](#license)
 
-## How to Run Unit Tests
-1. Ensure you have pytest installed. If not, you can install it using Poetry:
-```sh
-poetry add --dev pytest
-```
-2. Run the tests using `pytest`:
-```sh
-poetry run pytest
-```
-## How to Build and Run the Docker Container
-1. Build the Docker image:
-```sh
-docker build -t predictive-maintenance-app .
-```
-2. Run the Docker container:
-```sh
-docker run -p 5000:5000 predictive-maintenance-app
-```
+## Introduction
 
-## Repository Structure
-- `data/`: Contains the dataset files.
-- `src/`: Contains the source code for the project.
-- `models/`: Contains the saved models.
-- `tests/`: Contains the unit tests for the project.
-- `README.md`: Project documentation.
-- `pyproject.toml`: Project configuration file for Poetry.
+This project aims to predict failures in industrial equipment using machine learning models. The system is built using Python and various machine learning libraries.
+
+## Features
+
+- Data preprocessing and feature selection
+- Model training and evaluation
+- Model performance monitoring
+- Exploratory Data Analysis (EDA)
+- Model interpretation using SHAP
+
+## Installation
+
+To install the project, clone the repository and install the dependencies:
+
+```sh
+git clone https://github.com/yourusername/predictive-maintenance-scikit-learn-example.git
+cd predictive-maintenance-scikit-learn-example
+pip install .
+```
+Make sure to replace `yourusername` with your actual GitHub username in the clone URL. This structure provides a clear and concise overview of your project, making it easier for others to understand and contribute.
+
+## Usage
+To run the main application:
+```sh
+python main.py --config config.yaml
+```
 ## Configuration
-The project uses a configuration file `config.yaml` to manage various settings. Ensure this file is correctly set up before running the scripts.
+The configuration file config.yaml contains various settings for the project. Update this file to match your requirements.
 
-## Example Configuration (`config.yaml`)
-```yaml
-data_path: "data/predictive_maintenance.csv"
-target_column: "failure"
-columns_to_drop: ["unnecessary_column1", "unnecessary_column2"]
-columns_to_scale: ["feature1", "feature2"]
-columns_to_encode: ["categorical_feature1", "categorical_feature2"]
-param_grid:
-  n_estimators: [100, 200, 300]
-  max_depth: [10, 20, 30]
-model_directory: "models"
+## Testing
+Testing
+To run the tests, use the following command:
+```sh
+pytest --cov=src --cov-report=xml
 ```
+
+## Contributing
+Contributions are welcome! Please read the [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
 ## License
-This project is licensed under the BSD3-Clause License - see the LICENSE file for details
-
-## Contact
-For any questions or suggestions, please contact Joseph McGuire at joseph.c.mcg@gmail.com.
-
+This project is licensed under the BSD 3-Clause License. See the LICENSE file for details.
