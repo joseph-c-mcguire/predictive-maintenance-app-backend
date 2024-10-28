@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./back-end
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./back-end:/app
+    environment:
+      - FLASK_ENV=development
+  ## Build frontend container, access on port 80
+  frontend:
+    build: ./predictive-maintenance
+    ports:
+      - "80:80"

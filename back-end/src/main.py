@@ -1,4 +1,3 @@
-
 import logging
 import argparse
 from flask import Flask, request, jsonify
@@ -20,6 +19,9 @@ from src.ModelMonitor import ModelMonitor
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Initialize Flask app
+app = Flask(__name__)
+
 
 def main(config_path: str):
     # Load config
@@ -35,10 +37,6 @@ def main(config_path: str):
     if data.empty:
         logger.error("Failed to load data. Exiting.")
         exit(1)
-
-    # Perform EDA (commented out for now)
-    # logger.info("Performing EDA")
-    # perform_eda(data)
 
     # Prepare features and target
     logger.info("Preparing features and target")
@@ -99,9 +97,6 @@ def main(config_path: str):
     # Initialize ModelMonitor
     monitor = ModelMonitor(model, pro_X_train)
 
-    # Launch Flask app
-    app = Flask(__name__)
-
     @app.route('/predict', methods=['POST'])
     def predict():
         """
@@ -110,9 +105,12 @@ def main(config_path: str):
         Request JSON format:
         {
             "features": {
-                "temperature": value,
-                "vibration": value,
-                ...
+                "Type": "value",
+                "Air temperature [K]": value,
+                "Process temperature [K]": value,
+                "Rotational speed [rpm]": value,
+                "Torque [Nm]": value,
+                "Tool wear [min]": value
             }
         }
 
@@ -120,7 +118,7 @@ def main(config_path: str):
         JSON response with prediction result.
         """
         data = request.get_json(force=True)
-        features = DataFrame(data, index=[0])
+        features = DataFrame(data['features'], index=[0])
         prediction = model.predict(features)
 
         # Monitor model performance
@@ -152,10 +150,6 @@ def main(config_path: str):
         performance = monitor_model_performance(best_model, X_new, y_new)
         return jsonify({'roc_auc': performance})
 
-    if __name__ == '__main__':
-        logger.info("Starting Flask app")
-        app.run(debug=True)
-
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Predictive Maintenance CLI")
@@ -163,3 +157,5 @@ if __name__ == '__main__':
                         help='Path to the configuration file')
     args = parser.parse_args()
     main(args.config)
+    logger.info("Starting Flask app")
+    app.run(host='0.0.0.0', port=5000, debug=True)
