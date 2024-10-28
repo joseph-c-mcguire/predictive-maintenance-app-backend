@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import MonitorForm from './components/MonitorForm';
+import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
+import MonitorForm from './components/MonitorForm/MonitorForm';
 
 const App = () => {
   return (
