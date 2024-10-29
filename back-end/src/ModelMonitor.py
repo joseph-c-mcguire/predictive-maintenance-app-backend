@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from sklearn.base import BaseEstimator
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, mean_squared_error
 import logging
 
@@ -9,12 +10,12 @@ logger = logging.getLogger(__name__)
 
 
 class ModelMonitor:
-    def __init__(self, model, X_train, threshold_drift=0.05):
+    def __init__(self, model: BaseEstimator, X_train: np.ndarray, threshold_drift=0.05):
         self.model = model
-        self.X_train = X_train
+        # self.X_train = X_train
         self.threshold_drift = threshold_drift
         # Store initial training mean values for feature drift detection
-        self.train_feature_means = X_train.mean()
+        self.train_feature_means = np.mean(X_train, axis=0)
 
     def calculate_metrics(self, y_true, y_pred, problem_type='classification'):
         if problem_type == 'classification':

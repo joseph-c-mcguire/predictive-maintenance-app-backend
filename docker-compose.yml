@@ -9,8 +9,13 @@ services:
       - ./back-end:/app
     environment:
       - FLASK_ENV=development
-  ## Build frontend container, access on port 80
+      - MODEL_PATH=/app/models/best_model.pkl
+      - CONFIG_PATH=/app/config.yaml
+      - MONITOR_PATH=/app/models/model_monitor.pkl
+
   frontend:
     build: ./predictive-maintenance
     ports:
-      - "80:80"
+      - "3000:80"
+    volumes:
+      - ./predictive-maintenance:/app
