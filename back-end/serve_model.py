@@ -2,10 +2,10 @@ import logging
 import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from pandas import DataFrame, read_csv
+from pandas import DataFrame
 import joblib
 
-from src.data_utils import load_model, monitor_model_performance, load_config
+from src.data_utils import load_model, load_config
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -51,35 +51,16 @@ def predict():
     features = DataFrame(data['features'], index=[0])
     prediction = pipeline.predict(features)
 
+    # Map prediction to "Failed" or "Not Failed"
+    prediction_label = "Failed" if prediction[0] == 1 else "Not Failed"
+
     # Monitor model performance
     # metrics, drift_status = monitor.monitor(X_new=features, y_true=prediction)
     # logger.info(f"Prediction metrics: {metrics}")
     # logger.info(f"Drift detected: {drift_status}")
 
-    return jsonify({'prediction': prediction[0]})
-
-
-# @app.route('/monitor', methods=['POST'])
-# def monitor_performance():
-#     """
-#     Monitor model performance on new data.
-
-#     Request JSON format:
-#     {
-#         "data_path": "path_to_new_data.csv"
-#     }
-
-#     Returns:
-#     JSON response with model performance metrics and drift status.
-#     """
-#     data = request.get_json(force=True)
-#     new_data_path = data['data_path']
-#     new_data = read_csv(new_data_path)
-#     X_new = pipeline.transform(new_data)
-#     y_new = new_data[config["target_column"]]
-#     performance = monitor_model_performance(pipeline, X_new, y_new)
-#     drift_status = monitor.check_feature_drift(X_new)
-#     return jsonify({'roc_auc': performance, 'drift_detected': drift_status})
+    # JSON doesn't recognize numpy types, so we need to convert the prediction to a Python type
+    return jsonify({'prediction': prediction_label})
 
 
 if __name__ == '__main__':

@@ -16,6 +16,7 @@ EXPOSE 5000
 # Set environment variables for Flask
 ENV FLASK_APP=serve_model.py
 ENV FLASK_RUN_HOST=0.0.0.0
+ENV FLASK_RUN_PORT=5000
 
 # Run the Flask app
-CMD ["flask", "run"]
+CMD ["flask", "run", "--port", "5000"]
