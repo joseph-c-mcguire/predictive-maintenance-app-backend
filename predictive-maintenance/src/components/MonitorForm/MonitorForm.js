@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './MonitorForm.css'; // Import the CSS file
 
-const MonitorForm = () => {
+const MonitorForm = ({ setResult }) => {
   const [formData, setFormData] = useState({
     type: '',
     airTemperature: '',
@@ -10,7 +11,6 @@ const MonitorForm = () => {
     torque: '',
     toolWear: ''
   });
-  const [result, setResult] = useState(null);
   const [backendUrl, setBackendUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -34,16 +34,13 @@ const MonitorForm = () => {
     if (!type || !airTemperature || !processTemperature || !rotationalSpeed || !torque || !toolWear) {
       return false;
     }
-    if (isNaN(parseFloat(airTemperature)) || isNaN(parseFloat(processTemperature)) || isNaN(parseInt(rotationalSpeed, 10)) || isNaN(parseFloat(torque)) || isNaN(parseInt(toolWear, 10))) {
-      return false;
-    }
     return true;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) {
-      setError('Please fill in all fields correctly.');
+      setError('Please fill in all fields.');
       return;
     }
     setLoading(true);
@@ -68,94 +65,68 @@ const MonitorForm = () => {
     }
   };
 
-  const handleNewEntry = () => {
-    setFormData({
-      type: '',
-      airTemperature: '',
-      processTemperature: '',
-      rotationalSpeed: '',
-      torque: '',
-      toolWear: ''
-    });
-    setResult(null);
-  };
-
   return (
-    <div>
+    <div className="monitor-form-container">
       <h2>Monitor Model Performance</h2>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Type:
+      <form onSubmit={handleSubmit} className="monitor-form">
+        <div className="form-group">
+          <label>Type:</label>
           <select name="type" value={formData.type} onChange={handleChange}>
             <option value="">Select Type</option>
             <option value="M">M</option>
             <option value="L">L</option>
             <option value="H">H</option>
           </select>
-        </label>
-        <label>
-          Air Temperature [K]:
+        </div>
+        <div className="form-group">
+          <label>Air Temperature [K]:</label>
           <input
             type="text"
             name="airTemperature"
             value={formData.airTemperature}
             onChange={handleChange}
           />
-        </label>
-        <label>
-          Process Temperature [K]:
+        </div>
+        <div className="form-group">
+          <label>Process Temperature [K]:</label>
           <input
             type="text"
             name="processTemperature"
             value={formData.processTemperature}
             onChange={handleChange}
           />
-        </label>
-        <label>
-          Rotational Speed [rpm]:
+        </div>
+        <div className="form-group">
+          <label>Rotational Speed [rpm]:</label>
           <input
             type="text"
             name="rotationalSpeed"
             value={formData.rotationalSpeed}
             onChange={handleChange}
           />
-        </label>
-        <label>
-          Torque [Nm]:
+        </div>
+        <div className="form-group">
+          <label>Torque [Nm]:</label>
           <input
             type="text"
             name="torque"
             value={formData.torque}
             onChange={handleChange}
           />
-        </label>
-        <label>
-          Tool Wear [min]:
+        </div>
+        <div className="form-group">
+          <label>Tool Wear [min]:</label>
           <input
             type="text"
             name="toolWear"
             value={formData.toolWear}
             onChange={handleChange}
           />
-        </label>
-        <button type="submit">Submit</button>
+        </div>
+        <button type="submit" className="submit-button">Submit</button>
       </form>
       {loading && <p>Loading...</p>}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {result && (
-        <div>
-          <h3>Results</h3>
-          <p>Predicted Class: {result.prediction}</p>
-          {/* <p>Model Drift Detected: {result.drift_detected ? 'Yes' : 'No'}</p> */}
-          <h4>Metrics:</h4>
-          <ul>
-            {result.metrics && Object.entries(result.metrics).map(([key, value]) => (
-              <li key={key}>{key}: {value}</li>
-            ))}
-          </ul>
-          <button onClick={handleNewEntry}>Enter New Data</button>
-        </div>
-      )}
+      {error && <p className="error-message">{error}</p>}
     </div>
   );
 };
