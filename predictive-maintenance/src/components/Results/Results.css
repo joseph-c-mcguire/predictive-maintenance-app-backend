@@ -1,14 +1,14 @@
 .results-container {
   flex: 1;
   padding: 20px;
-  background-color: #dfe6e9; /* light grey */
+  background-color: #e0e6ed; /* light blueish grey */
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .results h3 {
   margin-top: 0;
-  color: #0984e3; /* baby blue */
+  color: #0077b6; /* blue */
 }
 
 .results ul {
@@ -22,7 +22,7 @@
 }
 
 .new-entry-button {
-  background-color: #74b9ff; /* baby blue */
+  background-color: #0077b6; /* blue */
   color: white;
   padding: 10px;
   border: none;
@@ -33,5 +33,9 @@
 }
 
 .new-entry-button:hover {
-  background-color: #0984e3; /* darker baby blue */
+  background-color: #005f8a; /* darker blue */
+}
+
+h2 {
+  text-align: center;
 }

@@ -2,7 +2,7 @@
   flex: 1;
   margin-right: 20px;
   padding: 20px;
-  background-color: #dfe6e9; /* light grey */
+  background-color: #e0e6ed; /* light blueish grey */
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   font-family: 'Arial', sans-serif;
@@ -10,13 +10,17 @@
 
 .monitor-form h2 {
   text-align: center;
-  color: #0984e3; /* baby blue */
+  color: #0077b6; /* blue */
   margin-bottom: 20px;
 }
 
 .monitor-form {
   display: flex;
   flex-direction: column;
+}
+
+h2 {
+  text-align: center;
 }
 
 .form-group {
@@ -41,7 +45,7 @@
 }
 
 .submit-button {
-  background-color: #74b9ff; /* baby blue */
+  background-color: #0077b6; /* blue */
   color: white;
   padding: 10px;
   border: none;
@@ -52,7 +56,7 @@
 }
 
 .submit-button:hover {
-  background-color: #0984e3; /* darker baby blue */
+  background-color: #005f8a; /* darker blue */
 }
 
 .error-message {

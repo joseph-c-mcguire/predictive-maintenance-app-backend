@@ -1,0 +1,55 @@
+.dashboard-card {
+	background-color: #f9f9f9;
+	border-radius: 8px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	padding: 20px;
+	margin: 20px;
+}
+
+.controls {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 20px;
+}
+
+.controls label {
+	margin-right: 10px;
+}
+
+.dashboard-card h2 {
+	text-align: center;
+}
+
+.plot-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+.interactive-dashboard-container {
+  flex: 1;
+  padding: 20px;
+  background-color: #f8f9fa; /* light grey */
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 40px;
+  margin-top: 40px; /* Add more space between the interactive dashboard and other components */
+  font-family: 'Arial', sans-serif;
+}
+
+.interactive-dashboard-container h2 {
+  color: #0077b6; /* blue */
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.interactive-dashboard-container .plotly-graph-div {
+  width: 100%;
+  height: auto;
+}
+
+.interactive-dashboard-container .plotly {
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}

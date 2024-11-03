@@ -1,0 +1,26 @@
+.diagnostic-plots-container {
+  flex: 1;
+  padding: 20px;
+  background-color: #f8f9fa; /* light grey */
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 40px;
+  margin-top: 40px; /* Add more space between the diagnostic plots and other components */
+  font-family: 'Arial', sans-serif;
+}
+
+.diagnostic-plots-container h2 {
+  color: #0077b6; /* blue */
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.diagnostic-plots-container .plotly-graph-div {
+  width: 100%;
+  height: auto;
+}
+
+.diagnostic-plots-container .plotly {
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}

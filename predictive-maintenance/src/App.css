@@ -4,7 +4,7 @@
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f0f2f5;
+  background-color: #f0f4f8; /* light blueish grey */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -12,7 +12,7 @@
 }
 
 header {
-  background-color: #0984e3; /* baby blue */
+  background-color: #0077b6; /* blue */
   color: white;
   padding: 20px;
   width: 100%;
@@ -25,7 +25,7 @@ header {
 }
 
 footer {
-  background-color: #0984e3; /* baby blue */
+  background-color: #0077b6; /* blue */
   color: white;
   padding: 10px;
   width: 100%;
@@ -53,4 +53,8 @@ footer {
   flex-direction: row;
   justify-content: space-between;
   width: 100%; /* Ensure the row takes full width */
+}
+
+h2 {
+  text-align: center;
 }

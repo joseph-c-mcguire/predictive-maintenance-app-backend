@@ -3,7 +3,7 @@ import React from 'react';
 const Footer = () => {
   return (
     <footer>
-      <p>&copy; 2023 Predictive Maintenance System</p>
+      <p>&copy; 2023 Sample Predictive Maintenance System | Developed by Joseph McGuire</p>
     </footer>
   );
 };

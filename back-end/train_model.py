@@ -84,6 +84,16 @@ def train_model(config_path: str):
     logger.info("Saving the pipeline")
     joblib.dump(pipeline, Path(config["model_directory"]) / 'best_model.pkl')
 
+    # Save the min and max values from the training data
+    min_max_values = {
+        'min': X_train.min().to_dict(),
+        'max': X_train.max().to_dict()
+    }
+    min_max_values_path = Path(
+        config["model_directory"]) / 'min_max_values.pkl'
+    logger.info(f"Saving the min and max values to {min_max_values_path}")
+    joblib.dump(min_max_values, min_max_values_path)
+
     # Initialize and save the ModelMonitor
     logger.info("Initializing and saving the ModelMonitor")
     monitor = ModelMonitor(

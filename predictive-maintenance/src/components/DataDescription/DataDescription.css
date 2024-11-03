@@ -1,14 +1,15 @@
 .data-description-container {
   flex: 1;
   padding: 20px;
-  background-color: #d3d5d6; /* light grey */
+  background-color: #e0e6ed; /* light blueish grey */
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(23, 201, 201, 0.507);
-  margin-bottom: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 40px;
+  margin-top: 40px; /* Add more space between the data description and the header */
 }
 
 .data-description-container h2 {
-  color: #0984e3; /* baby blue */
+  color: #0077b6; /* blue */
 }
 
 .data-description-container ul {
@@ -17,10 +18,14 @@
 }
 
 .data-description-container a {
-  color: #0984e3; /* baby blue */
+  color: #0077b6; /* blue */
   text-decoration: none;
 }
 
 .data-description-container a:hover {
   text-decoration: underline;
+}
+
+h2 {
+  text-align: center;
 }
