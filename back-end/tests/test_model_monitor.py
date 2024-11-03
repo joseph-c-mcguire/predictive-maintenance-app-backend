@@ -88,3 +88,15 @@ def test_check_feature_drift_without_drift(trained_model, sample_data):
     # Just check that it runs without errors
     drift_detected = monitor.check_feature_drift(X_train)
     assert not drift_detected
+
+
+def test_monitor_method_classification(trained_model, sample_data):
+    _, _, X_new, y_true = sample_data
+    monitor = ModelMonitor(trained_model, X_new)
+    metrics, drift_detected = monitor.monitor(
+        X_new, y_true, problem_type='classification')
+    assert 'accuracy' in metrics
+    assert 'precision' in metrics
+    assert 'recall' in metrics
+    assert 'f1_score' in metrics
+    assert isinstance(drift_detected, bool)

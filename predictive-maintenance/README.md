@@ -1,3 +1,9 @@
+# Front-end for Predictive Maintenance System
+
+## Installation
+
+To install the front-end, navigate to the `predictive-maintenance` directory and install the dependencies.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

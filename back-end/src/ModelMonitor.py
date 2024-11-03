@@ -10,12 +10,12 @@ logger = logging.getLogger(__name__)
 
 
 class ModelMonitor:
-    def __init__(self, model: BaseEstimator, X_train: np.ndarray, threshold_drift=0.05):
+    def __init__(self, model: BaseEstimator, X_train: pd.DataFrame, threshold_drift=0.05):
         self.model = model
-        # self.X_train = X_train
+        self.X_train = X_train
         self.threshold_drift = threshold_drift
         # Store initial training mean values for feature drift detection
-        self.train_feature_means = np.mean(X_train, axis=0)
+        self.train_feature_means = X_train.mean()
 
     def calculate_metrics(self, y_true, y_pred, problem_type='classification'):
         if problem_type == 'classification':
