@@ -1,5 +1,21 @@
 # Front-end for Predictive Maintenance System
 
+## Running the Front-end
+To run the front-end application, use the following command:
+
+```sh
+npm start
+```
+
+This will start the development server and open the application in your default web browser. The application will be available at http://localhost:3000.
+
+## Running Unit Tests
+To run the unit tests, use the following command:
+
+This will launch the test runner in interactive watch mode. The tests will automatically re-run when you make changes to the code.
+```sh
+npm test
+```
 ## Installation
 
 To install the front-end, navigate to the `predictive-maintenance` directory and install the dependencies.

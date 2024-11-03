@@ -70,8 +70,8 @@ const MonitorForm = ({ setResult }) => {
       <h2>Monitor Model Performance</h2>
       <form onSubmit={handleSubmit} className="monitor-form">
         <div className="form-group">
-          <label>Type:</label>
-          <select name="type" value={formData.type} onChange={handleChange}>
+          <label htmlFor="type">Type:</label>
+          <select id="type" name="type" value={formData.type} onChange={handleChange}>
             <option value="">Select Type</option>
             <option value="M">M</option>
             <option value="L">L</option>
@@ -79,8 +79,9 @@ const MonitorForm = ({ setResult }) => {
           </select>
         </div>
         <div className="form-group">
-          <label>Air Temperature [K]:</label>
+          <label htmlFor="airTemperature">Air Temperature [K]:</label>
           <input
+            id="airTemperature"
             type="text"
             name="airTemperature"
             value={formData.airTemperature}
@@ -88,8 +89,9 @@ const MonitorForm = ({ setResult }) => {
           />
         </div>
         <div className="form-group">
-          <label>Process Temperature [K]:</label>
+          <label htmlFor="processTemperature">Process Temperature [K]:</label>
           <input
+            id="processTemperature"
             type="text"
             name="processTemperature"
             value={formData.processTemperature}
@@ -97,8 +99,9 @@ const MonitorForm = ({ setResult }) => {
           />
         </div>
         <div className="form-group">
-          <label>Rotational Speed [rpm]:</label>
+          <label htmlFor="rotationalSpeed">Rotational Speed [rpm]:</label>
           <input
+            id="rotationalSpeed"
             type="text"
             name="rotationalSpeed"
             value={formData.rotationalSpeed}
@@ -106,8 +109,9 @@ const MonitorForm = ({ setResult }) => {
           />
         </div>
         <div className="form-group">
-          <label>Torque [Nm]:</label>
+          <label htmlFor="torque">Torque [Nm]:</label>
           <input
+            id="torque"
             type="text"
             name="torque"
             value={formData.torque}
@@ -115,8 +119,9 @@ const MonitorForm = ({ setResult }) => {
           />
         </div>
         <div className="form-group">
-          <label>Tool Wear [min]:</label>
+          <label htmlFor="toolWear">Tool Wear [min]:</label>
           <input
+            id="toolWear"
             type="text"
             name="toolWear"
             value={formData.toolWear}
