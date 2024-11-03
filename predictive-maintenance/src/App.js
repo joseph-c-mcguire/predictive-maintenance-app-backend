@@ -46,7 +46,7 @@ const App = () => {
         <div className="main-content">
           <DataDescription />
           <InteractiveDashboard data={data} />
-          <DiagnosticPlots data={data} />
+          {/* <DiagnosticPlots data={data} /> */}
           <div className="content-row">
             <MonitorForm setResult={setResult} />
             <Results result={result} handleNewEntry={handleNewEntry} />
