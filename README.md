@@ -9,6 +9,7 @@ A predictive maintenance system for industrial equipment using machine learning.
 - [Installation](#installation)
 - [Running the Project](#running-the-project)
 - [Running Unit Tests](#running-unit-tests)
+- [Running with Docker-compose](#running-with-docker-compose)  <!-- Added new section to Table of Contents -->
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -80,6 +81,13 @@ To run the tests for the front-end, use the following command:
 ```sh
 cd frontend
 npm test
+```
+
+## Running with Docker-compose
+
+To run the project using Docker-compose, use the following command:
+```sh
+docker-compose up
 ```
 
 ## License
