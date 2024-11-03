@@ -82,10 +82,6 @@ cd frontend
 npm test
 ```
 
-## Contributing
-
-Contributions are welcome! Please read the [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute to this project.
-
 ## License
 
 This project is licensed under the BSD 3-Clause License. See the LICENSE file for details.
