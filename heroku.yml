@@ -1,0 +1,24 @@
+
+build:
+  docker:
+    web: 
+      dockerfile: ./back-end/Dockerfile
+    worker:
+      dockerfile: ./predictive-maintenance/Dockerfile
+
+run:
+  web: 
+    command: flask run --host=0.0.0.0 --port=$PORT
+    image: josephmcguire/webapp:latest
+    environment:
+      FLASK_ENV: development
+      MODEL_PATH: /app/models/best_model.pkl
+      CONFIG_PATH: /app/config.yaml
+      MONITOR_PATH: /app/models/model_monitor.pkl
+      FLASK_RUN_PORT: 5000
+
+  worker:
+    command: npm start
+    image: josephmcguire/webapp-frontend:latest
+    environment:
+      REACT_APP_BACKEND_URL: http://backend:5000

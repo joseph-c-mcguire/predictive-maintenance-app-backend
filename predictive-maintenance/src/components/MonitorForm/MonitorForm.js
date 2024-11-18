@@ -128,9 +128,11 @@ const MonitorForm = ({ setResult }) => {
             onChange={handleChange}
           />
         </div>
-        <button type="submit" className="submit-button">Submit</button>
+        <button type="submit" className="submit-button" disabled={loading}>
+          {loading ? 'Submitting...' : 'Submit'}
+        </button>
       </form>
-      {loading && <p>Loading...</p>}
+      {loading && <div className="spinner"></div>}
       {error && <p className="error-message">{error}</p>}
     </div>
   );

@@ -1,3 +1,18 @@
+footer {
+  background-color: #0077b6; /* blue */
+  color: white;
+  padding: 20px;
+  width: 100%;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+}
+
 h2 {
-	text-align: center;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
 }

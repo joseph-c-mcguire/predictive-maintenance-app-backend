@@ -17,23 +17,29 @@ header {
   padding: 20px;
   width: 100%;
   text-align: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   position: fixed;
   top: 0;
   left: 0;
   z-index: 1000;
+  transition: background-color 0.3s ease-in-out;
+}
+
+header:hover {
+  background-color: #005f8a; /* darker blue */
 }
 
 footer {
   background-color: #0077b6; /* blue */
   color: white;
-  padding: 10px;
+  padding: 20px;
   width: 100%;
   text-align: center;
   position: fixed;
   bottom: 0;
   left: 0;
   z-index: 1000;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .main-content {
@@ -43,7 +49,7 @@ footer {
   max-width: 1200px;
   padding: 20px;
   margin-top: 80px; /* Adjust based on header height */
-  margin-bottom: 40px; /* Adjust based on footer height */
+  margin-bottom: 80px; /* Adjust based on footer height */
   flex: 1;
   align-items: center; /* Center the content horizontally */
 }
@@ -57,4 +63,6 @@ footer {
 
 h2 {
   text-align: center;
+  font-size: 24px;
+  font-weight: 700;
 }

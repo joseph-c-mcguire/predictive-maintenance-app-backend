@@ -4,11 +4,16 @@ header {
   padding: 20px;
   width: 100%;
   text-align: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   position: fixed;
   top: 0;
   left: 0;
   z-index: 1000;
+  transition: background-color 0.3s ease-in-out;
+}
+
+header:hover {
+  background-color: #005f8a; /* darker blue */
 }
 
 .banner-container {
@@ -27,4 +32,6 @@ h1 {
   margin: 0;
   font-family: 'SleekFont', sans-serif; /* Use a sleek font */
   text-align: center;
+  font-size: 36px;
+  font-weight: 700;
 }
